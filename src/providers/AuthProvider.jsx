@@ -11,41 +11,41 @@ export const AuthContext = createContext(null);
 
 const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
-    const [userLoading, setUserLoading] = useState(true);
+    const [loading, setLoading] = useState(true);
 
     // Register with Email & Password
     const createUser = (email, password) => {
-        setUserLoading(true);
+        setLoading(true);
         return createUserWithEmailAndPassword(auth, email, password)
     }
 
     // Sign in with Email & Password
-    const userLogin = (email, password) => {
-        setUserLoading(true);
+    const signIn = (email, password) => {
+        setLoading(true);
         return signInWithEmailAndPassword(auth, email, password)
     }
 
     // Sign in with Google
     const googleLogin = () => {
-        setUserLoading(true);
+        setLoading(true);
         return signInWithPopup(auth, googleProvider)
     }
 
     // Sign in with Facebook
     const facebookLogin = () => {
-        setUserLoading(true);
+        setLoading(true);
         return signInWithPopup(auth, facebookProvider)
     }
 
     // Sign in with Github
     const githubLogin = () => {
-        setUserLoading(true);
+        setLoading(true);
         return signInWithPopup(auth, githubProvider)
     }
 
     // Sign Out
     const logOut = () => {
-        setUserLoading(true);
+        setLoading(true);
         return signOut(auth)
     }
 
@@ -53,14 +53,14 @@ const AuthProvider = ({ children }) => {
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, currentUser => {
             setUser(currentUser);
-            setUserLoading(false);
+            setLoading(false);
         });
         return () => {
             unsubscribe();
         }
     }, [])
 
-    const authInfo = { user, createUser, userLogin, googleLogin, facebookLogin, githubLogin, logOut, userLoading, setUserLoading };
+    const authInfo = { user, createUser, signIn, googleLogin, facebookLogin, githubLogin, logOut, userLoading: loading, setUserLoading: setLoading };
 
     return (
         <AuthContext.Provider value={authInfo}>
