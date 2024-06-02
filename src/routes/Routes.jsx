@@ -6,6 +6,8 @@ import Dashboard from "../pages/Dashboard/Dashboard";
 import Contactus from "../pages/Contactus/Contactus";
 import Login from "../pages/Login/Login";
 import Register from "../pages/Register/Register";
+import WorkSheet from "../pages/Dashboard/WorkSheet/WorkSheet";
+import PaymentHistory from "../pages/Dashboard/PaymentHistory/PaymentHistory";
 
 export const router = createBrowserRouter([
     {
@@ -35,4 +37,18 @@ export const router = createBrowserRouter([
             }
         ],
     },
+    {
+        path: "dashboard",
+        element: <Dashboard></Dashboard>,
+        children: [
+            {
+                path: "work-sheet",
+                element: <WorkSheet></WorkSheet>
+            },
+            {
+                path: "payment-history",
+                element: <PaymentHistory></PaymentHistory>
+            }
+        ]
+    }
 ]);
