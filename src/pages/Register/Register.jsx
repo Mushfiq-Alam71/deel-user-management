@@ -2,7 +2,7 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import Lottie from "lottie-react";
 import animationData from '../../assets/register_animation.json'
 import { updateProfile } from "firebase/auth";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../providers/AuthProvider";
 import SocialLogin from "../../components/SocialLogin/SocialLogin";
@@ -11,8 +11,9 @@ import { toast } from "react-toastify";
 import { useForm } from "react-hook-form"
 
 const Register = () => {
-   const { register, handleSubmit, formState: { errors } } = useForm();
+   const { register, handleSubmit, reset, formState: { errors } } = useForm();
    const { createUser } = useContext(AuthContext);
+   const navigate = useNavigate();
 
    const onSubmit = (data) => {
       console.log(data);
@@ -20,6 +21,8 @@ const Register = () => {
          .then(result => {
             const signedUser = result.user;
             console.log(signedUser);
+            reset();
+            navigate('/');
          })
 
    }
@@ -222,7 +225,7 @@ const Register = () => {
                            <span className="label-text">Photo URL</span>
                         </label>
                         <input type="text" {...register("photo", { required: true })} placeholder="photo" name='photo' className="input input-bordered" />
-                        {errors.image && <span className="text-red-400">PhotoURL is required</span>}
+                        {errors.photo && <span className="text-red-400">PhotoURL is required</span>}
                      </div>
                      <div className="form-control mt-4">
                         <button type="submit" className="btn btn-outline">Register</button>
