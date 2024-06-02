@@ -2,7 +2,7 @@
 
 const PaymentHistory = () => {
    return (
-      <div className="my-8">
+      <div className="">
          <div className="overflow-x-auto">
             <table className="table table-zebra">
                {/* head */}

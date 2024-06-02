@@ -4,6 +4,7 @@ import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import SocialLogin from "../../components/SocialLogin/SocialLogin";
 import Lottie from "lottie-react";
 import animationData from '../../assets/login_animation.json'
+import Swal from "sweetalert2";
 
 const Login = () => {
    useEffect(() => {
@@ -28,6 +29,13 @@ const Login = () => {
             console.log(result.user);
             // navigate after login
             navigate(from);
+            Swal.fire({
+               position: "center",
+               icon: "success",
+               title: "You've logged in successfully",
+               showConfirmButton: false,
+               timer: 2000
+            });
          })
          .catch(error => {
             console.error(error);

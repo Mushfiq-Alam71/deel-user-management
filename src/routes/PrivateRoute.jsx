@@ -2,16 +2,15 @@ import PropTypes from 'prop-types';
 import { useContext } from "react";
 import { AuthContext } from "../providers/AuthProvider";
 import { Navigate, useLocation } from "react-router-dom";
-// import pacman from '../assets/pacman.svg';
 
 const PrivateRoute = ({ children }) => {
     const location = useLocation();
-    const { user, userLoading } = useContext(AuthContext);
-    
-    if (userLoading) {
+    const { user, loading } = useContext(AuthContext);
+
+    if (loading) {
         return (
             <div className="flex items-center justify-center space-x-2">
-              {/*  <img src={pacman} alt="pacman" /> */}
+                <span className="loading loading-spinner loading-lg"></span>
             </div>
         )
     }

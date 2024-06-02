@@ -8,6 +8,8 @@ import Login from "../pages/Login/Login";
 import Register from "../pages/Register/Register";
 import WorkSheet from "../pages/Dashboard/WorkSheet/WorkSheet";
 import PaymentHistory from "../pages/Dashboard/PaymentHistory/PaymentHistory";
+import EmployeeList from "../pages/Dashboard/EmployeeList/EmployeeList";
+import PrivateRoute from "./PrivateRoute";
 
 export const router = createBrowserRouter([
     {
@@ -28,10 +30,6 @@ export const router = createBrowserRouter([
                 element: <Register></Register>
             },
             {
-                path: '/dashboard',
-                element: <Dashboard></Dashboard>
-            },
-            {
                 path: '/contactus',
                 element: <Contactus></Contactus>
             }
@@ -43,11 +41,15 @@ export const router = createBrowserRouter([
         children: [
             {
                 path: "work-sheet",
-                element: <WorkSheet></WorkSheet>
+                element: <PrivateRoute><WorkSheet></WorkSheet></PrivateRoute>
             },
             {
                 path: "payment-history",
-                element: <PaymentHistory></PaymentHistory>
+                element: <PrivateRoute><PaymentHistory></PaymentHistory></PrivateRoute>
+            },
+            {
+                path: "employee-list",
+                element: <PrivateRoute><EmployeeList></EmployeeList></PrivateRoute>
             }
         ]
     }
