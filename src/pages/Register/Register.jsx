@@ -9,11 +9,15 @@ import SocialLogin from "../../components/SocialLogin/SocialLogin";
 import { toast } from "react-toastify";
 
 import { useForm } from "react-hook-form"
+import moment from "moment";
+import Swal from "sweetalert2";
+import useAxiosSecure from "../../components/Hooks/useAxiosSecure";
 
 const Register = () => {
    const { register, handleSubmit, reset, formState: { errors } } = useForm();
    const { createUser } = useContext(AuthContext);
    const navigate = useNavigate();
+   const axiosSecure = useAxiosSecure();
 
    const onSubmit = (data) => {
       console.log(data);
@@ -23,6 +27,32 @@ const Register = () => {
             console.log(signedUser);
             reset();
             navigate('/');
+         })
+
+      const registeredInfo = { ...data, joined_on: moment().format("YYYY-MM-DD HH:mm:ss") }
+
+      axiosSecure.post(`/users`, registeredInfo)
+         .then(res => {
+            if (res.data.insertedId) {
+               Swal.fire({
+                  title: 'Congratulations!',
+                  text: `User Added Successfully!`,
+                  icon: 'success',
+                  confirmButtonText: 'Okay!'
+               })
+               reset();
+            }
+         })
+         .catch(error => {
+            console.error(error);
+            if (error) {
+               Swal.fire({
+                  title: 'Error!!',
+                  text: error,
+                  icon: 'error',
+                  confirmButtonText: 'Close'
+               })
+            }
          })
 
    }

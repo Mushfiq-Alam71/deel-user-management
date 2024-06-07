@@ -10,6 +10,7 @@ import WorkSheet from "../pages/Dashboard/WorkSheet/WorkSheet";
 import PaymentHistory from "../pages/Dashboard/PaymentHistory/PaymentHistory";
 import EmployeeList from "../pages/Dashboard/EmployeeList/EmployeeList";
 import PrivateRoute from "./PrivateRoute";
+import UserProfile from "../pages/UserProfile/UserProfile";
 
 export const router = createBrowserRouter([
     {
@@ -32,6 +33,10 @@ export const router = createBrowserRouter([
             {
                 path: '/contactus',
                 element: <Contactus></Contactus>
+            },
+            {
+                path: '/userprofile',
+                element: <UserProfile></UserProfile>
             }
         ],
     },
