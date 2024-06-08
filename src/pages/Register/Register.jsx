@@ -2,16 +2,15 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import Lottie from "lottie-react";
 import animationData from '../../assets/register_animation.json'
 import { updateProfile } from "firebase/auth";
-import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import { useContext, useEffect, useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
+import { useContext, useState } from "react";
 import { AuthContext } from "../../providers/AuthProvider";
-import SocialLogin from "../../components/SocialLogin/SocialLogin";
-import { toast } from "react-toastify";
-
 import { useForm } from "react-hook-form"
 import moment from "moment";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../../components/Hooks/useAxiosSecure";
+import { toast } from "react-toastify";
+
 
 const Register = () => {
    const { register, handleSubmit, reset, formState: { errors } } = useForm();
@@ -22,7 +21,16 @@ const Register = () => {
    const onSubmit = (data) => {
       console.log(data);
       createUser(data.email, data.password)
+
          .then(result => {
+            updateProfile(result.user, {
+               displayName: data.name,
+               photoURL: data.photo,
+            })
+               .then(() => { })
+               .catch(error => {
+                  toast.error(error.message.split(': ')[1]);
+               })
             const signedUser = result.user;
             console.log(signedUser);
             reset();
@@ -57,15 +65,6 @@ const Register = () => {
 
    }
 
-   // const location = useLocation();
-   // const from = location?.state ? location.state : '/';
-
-   // useEffect(() => {
-   //    document.title = "Register";
-   // }, [])
-
-   // const [registerError, setRegisterError] = useState(null);
-   // const [registerSuccess, setRegisterSuccess] = useState('');
    const [showPassword, setShowPassword] = useState(false);
 
    // const handleRegister = e => {
