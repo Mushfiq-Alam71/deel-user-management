@@ -11,6 +11,8 @@ import PaymentHistory from "../pages/Dashboard/PaymentHistory/PaymentHistory";
 import EmployeeList from "../pages/Dashboard/EmployeeList/EmployeeList";
 import PrivateRoute from "./PrivateRoute";
 import UserProfile from "../pages/UserProfile/UserProfile";
+import AllEmployeeList from "../pages/Dashboard/AllEmployeeList/AllEmployeeList";
+import EmployeeDetails from "../pages/Dashboard/EmployeeDetails/EmployeeDetails";
 
 export const router = createBrowserRouter([
     {
@@ -55,6 +57,15 @@ export const router = createBrowserRouter([
             {
                 path: "employee-list",
                 element: <PrivateRoute><EmployeeList></EmployeeList></PrivateRoute>
+            },
+            {
+                path: "all-employee-list",
+                element: <PrivateRoute><AllEmployeeList></AllEmployeeList></PrivateRoute>
+            },
+            {
+                path: "single-employee/:id",
+                element: <PrivateRoute><EmployeeDetails /></PrivateRoute>,
+                loader: ({ params }) => fetch(`http://localhost:5000/users/${params.id}`)
             }
         ]
     }

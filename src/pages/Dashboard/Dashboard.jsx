@@ -12,7 +12,10 @@ const Dashboard = () => {
                <ul className="menu my-4">
                   <li><NavLink to="/dashboard/work-sheet" className="text-lg font-semibold">Work Sheet</NavLink></li>
                   <li><NavLink to="/dashboard/payment-history" className="text-lg font-semibold">Payment History</NavLink></li>
+                  <div className="divider"></div>
                   <li><NavLink to="/dashboard/employee-list" className="text-lg font-semibold">Employee List</NavLink></li>
+                  <div className="divider"></div>
+                  <li><NavLink to="/dashboard/all-employee-list" className="text-lg font-semibold">All Employee List</NavLink></li>
                </ul>
             </div>
 

@@ -1,9 +1,7 @@
 import { Link } from "react-router-dom";
 import useEmployee from "../../../components/Hooks/useEmployee";
 
-
-
-const EmployeeList = () => {
+const AllEmployeeList = () => {
    const [employee] = useEmployee();
    return (
       <div>
@@ -28,19 +26,17 @@ const EmployeeList = () => {
                   <tbody>
                      {/* row 1 */}
                      {
-                        employee.filter(emp => emp.role !== 'HR').map((employee, index) => (
-                           <tr key={employee._id}>
-                              <th>{index + 1}</th>
-                              <td>{employee.name}</td>
-                              <td>{employee.email}</td>
-                              <td>{employee.role}</td>
-                              <td>❌</td>
-                              <td>{employee.bank}</td>
-                              <td>{employee.salary}</td>
-                              <td className="btn btn-outline btn-sm mt-1">Pay</td>
-                              <td><Link className="hover:underline hover:text-blue-500" to={`/dashboard/single-employee/${employee._id}`}>View Details</Link></td>
-                           </tr>
-                        ))
+                        employee.map((employee, index) => <tr key={employee._id}>
+                           <th>{index + 1}</th>
+                           <td>{employee.name}</td>
+                           <td>{employee.email}</td>
+                           <td>{employee.role}</td>
+                           <td>❌</td>
+                           <td>{employee.bank}</td>
+                           <td>{employee.salary}</td>
+                           <td className="btn btn-outline btn-sm mt-1">Pay</td>
+                           <td><Link className="hover:underline hover:text-blue-500" to={`/dashboard/single-employee/${employee._id}`}>View Details</Link></td>
+                        </tr>)
                      }
                   </tbody>
                </table>
@@ -50,4 +46,4 @@ const EmployeeList = () => {
    );
 };
 
-export default EmployeeList;
+export default AllEmployeeList;
