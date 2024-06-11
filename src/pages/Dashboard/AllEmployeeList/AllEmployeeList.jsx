@@ -19,7 +19,7 @@ const AllEmployeeList = () => {
                         <th className="text-lg text-black">Verified</th>
                         <th className="text-lg text-black">Bank Account</th>
                         <th className="text-lg text-black">Salary</th>
-                        <th className="text-lg text-black">Pay</th>
+                        {/* <th className="text-lg text-black">Pay</th> */}
                         <th className="text-lg text-black">Details</th>
                      </tr>
                   </thead>
@@ -34,7 +34,7 @@ const AllEmployeeList = () => {
                            <td>❌</td>
                            <td>{employee.bank}</td>
                            <td>{employee.salary}</td>
-                           <td className="btn btn-outline btn-sm mt-1">Pay</td>
+                           {/* <td className="btn btn-outline btn-sm mt-1">Pay</td> */}
                            <td><Link className="hover:underline hover:text-blue-500" to={`/dashboard/single-employee/${employee._id}`}>View Details</Link></td>
                         </tr>)
                      }
