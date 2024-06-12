@@ -2,12 +2,15 @@ import { Link } from "react-router-dom";
 import useEmployee from "../../../components/Hooks/useEmployee";
 import { useState } from "react";
 import PayFrom from "../../../components/PayForm/PayFrom";
+import { useForm } from "react-hook-form";
 
 
 
 const EmployeeList = () => {
    const [employees] = useEmployee();
    const [payableEmployee, setPayableEmployee] = useState({});
+
+   const form = useForm();
 
 
    return (
@@ -52,16 +55,7 @@ const EmployeeList = () => {
                </table>
                <dialog id="my_modal" className="modal modal-bottom sm:modal-middle">
                   <div className="modal-box w-2/3 h-[600px]">
-                     <PayFrom employee={payableEmployee} />
-                     <div className="modal-action">
-                        <form method="dialog">
-                           {/* if there is a button in form, it will close the modal */}
-                           <div className="relative flex flex-row">
-                              <button className="btn absolute top-[280px] right-[90px]">Pay</button>
-                              <button className="btn absolute top-[280px] right-[0px]">Cancel</button>
-                           </div>
-                        </form>
-                     </div>
+                     <PayFrom form={form} employee={payableEmployee} />
                   </div>
                </dialog>
             </div>
