@@ -42,7 +42,7 @@ const EmployeeList = () => {
                               <td>❌</td>
                               <td>{employee.bank}</td>
                               <td>{employee.salary}</td>
-                              <td onClick={() => { document.getElementById('my_modal_5').showModal(); setPayableEmployee(employee) }} className="btn btn-outline btn-sm mt-1">Pay</td>
+                              <td onClick={() => { document.getElementById('my_modal').showModal(); setPayableEmployee(employee) }} className="btn btn-outline btn-sm mt-1">Pay</td>
                               <td><Link className="hover:underline hover:text-blue-500" to={`/dashboard/single-employee/${employee._id}`}>View Details</Link></td>
                               {/* modal */}
                            </tr>
@@ -50,13 +50,16 @@ const EmployeeList = () => {
                      }
                   </tbody>
                </table>
-               <dialog id="my_modal_5" className="modal modal-bottom sm:modal-middle">
-                  <div className="modal-box">
+               <dialog id="my_modal" className="modal modal-bottom sm:modal-middle">
+                  <div className="modal-box w-2/3 h-[600px]">
                      <PayFrom employee={payableEmployee} />
                      <div className="modal-action">
                         <form method="dialog">
                            {/* if there is a button in form, it will close the modal */}
-                           <button className="btn">Close</button>
+                           <div className="relative flex flex-row">
+                              <button className="btn absolute top-[280px] right-[90px]">Pay</button>
+                              <button className="btn absolute top-[280px] right-[0px]">Cancel</button>
+                           </div>
                         </form>
                      </div>
                   </div>
