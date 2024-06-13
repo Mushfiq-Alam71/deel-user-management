@@ -3,15 +3,46 @@ import useEmployee from "../../../components/Hooks/useEmployee";
 import { useState } from "react";
 import PayFrom from "../../../components/PayForm/PayFrom";
 import { useForm } from "react-hook-form";
+import useAxiosSecure from "../../../components/Hooks/useAxiosSecure";
+import Swal from "sweetalert2";
 
 
 
 const EmployeeList = () => {
    const [employees] = useEmployee();
    const [payableEmployee, setPayableEmployee] = useState({});
+   const axiosSecure = useAxiosSecure();
+   const [months, setMonths] = useState({});
 
-   const form = useForm();
+   // const form = useForm();
+   const onSubmit = () => {
+      const payEmployeeInfo = { employee_name: payableEmployee.name, salary: payableEmployee.salary, payment_month: months.monthName }
 
+      axiosSecure.post('/payment', payEmployeeInfo)
+         .then(res => {
+            if (res.data.insertedId) {
+               Swal.fire({
+                  title: 'Congratulations!',
+                  text: `Your payment has been Successfully!`,
+                  icon: 'success',
+                  position: 'top-right',
+                  confirmButtonText: 'Okay!'
+               })
+            }
+         })
+         .catch(error => {
+            console.error(error);
+            if (error) {
+               Swal.fire({
+                  title: 'Error!!',
+                  text: error,
+                  position: 'top-right',
+                  icon: 'error',
+                  confirmButtonText: 'Close'
+               })
+            }
+         })
+   }
 
    return (
       <div>
@@ -55,7 +86,7 @@ const EmployeeList = () => {
                </table>
                <dialog id="my_modal" className="modal modal-bottom sm:modal-middle">
                   <div className="modal-box w-2/3 h-[600px]">
-                     <PayFrom form={form} employee={payableEmployee} />
+                     <PayFrom setMonths={setMonths} employee={payableEmployee} onSubmit={onSubmit} />
                   </div>
                </dialog>
             </div>
