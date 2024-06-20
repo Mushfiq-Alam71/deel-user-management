@@ -1,8 +1,12 @@
 import { NavLink, Outlet } from "react-router-dom";
 import Navbar from "../../components/Navbar/Navbar";
+import useAdmin from "../../components/Hooks/useAdmin";
 
 
 const Dashboard = () => {
+
+   const [isAdmin] = useAdmin();
+   console.log(isAdmin);
    return (
       <div className="max-w-7xl mx-auto">
          <Navbar></Navbar>
@@ -10,12 +14,12 @@ const Dashboard = () => {
             {/* dashboard nav */}
             <div className="w-64 min-h-screen bg-base-200 my-8">
                <ul className="menu my-4">
-                  <li><NavLink to="/dashboard/work-sheet" className="text-lg font-semibold">Work Sheet</NavLink></li>
-                  <li><NavLink to="/dashboard/payment-history" className="text-lg font-semibold">Payment History</NavLink></li>
-                  <div className="divider"></div>
-                  <li><NavLink to="/dashboard/employee-list" className="text-lg font-semibold">Employee List</NavLink></li>
-                  <div className="divider"></div>
-                  <li><NavLink to="/dashboard/all-employee-list" className="text-lg font-semibold">All Employee List</NavLink></li>
+
+                  {isAdmin ? <><li><NavLink to="/dashboard/all-employee-list" className="text-lg font-semibold">All Employee List</NavLink></li></> : <><li><NavLink to="/dashboard/work-sheet" className="text-lg font-semibold">Work Sheet</NavLink></li>
+                     <li><NavLink to="/dashboard/payment-history" className="text-lg font-semibold">Payment History</NavLink></li>
+                     <div className="divider"></div>
+                     <li><NavLink to="/dashboard/employee-list" className="text-lg font-semibold">Employee List</NavLink></li>
+                     <div className="divider"></div></>}
                </ul>
             </div>
 

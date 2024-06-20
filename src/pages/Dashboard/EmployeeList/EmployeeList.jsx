@@ -1,18 +1,23 @@
 import { Link } from "react-router-dom";
-import useEmployee from "../../../components/Hooks/useEmployee";
 import { useState } from "react";
 import PayFrom from "../../../components/PayForm/PayFrom";
-import { useForm } from "react-hook-form";
 import useAxiosSecure from "../../../components/Hooks/useAxiosSecure";
 import Swal from "sweetalert2";
+import { useQuery } from "@tanstack/react-query";
 
 
 
 const EmployeeList = () => {
-   const [employees] = useEmployee();
    const [payableEmployee, setPayableEmployee] = useState({});
-   const axiosSecure = useAxiosSecure();
    const [months, setMonths] = useState({});
+   const axiosSecure = useAxiosSecure();
+   const { data: employees = [] } = useQuery({
+      queryKey: ['employee'],
+      queryFn: async () => {
+         const res = await axiosSecure.get('/users')
+         return res.data;
+      }
+   })
 
    // const form = useForm();
    const onSubmit = () => {
@@ -68,6 +73,7 @@ const EmployeeList = () => {
                      {/* row 1 */}
                      {
                         employees.filter(emp => emp.role !== 'HR').map((employee, index) => (
+                           // && emp.role !== 'admin'
                            <tr key={employee._id}>
                               <th>{index + 1}</th>
                               <td>{employee.name}</td>

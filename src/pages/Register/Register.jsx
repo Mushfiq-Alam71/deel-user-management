@@ -8,126 +8,89 @@ import { AuthContext } from "../../providers/AuthProvider";
 import { useForm } from "react-hook-form"
 import moment from "moment";
 import Swal from "sweetalert2";
-import useAxiosSecure from "../../components/Hooks/useAxiosSecure";
 import { toast } from "react-toastify";
+import useAxiosPublic from "../../components/Hooks/useAxiosPublic";
+import axios from "axios";
 
+const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
+const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
 
 const Register = () => {
    const { register, handleSubmit, reset, formState: { errors } } = useForm();
-   const { createUser } = useContext(AuthContext);
+   const { createUser, setUser } = useContext(AuthContext);
    const navigate = useNavigate();
-   const axiosSecure = useAxiosSecure();
+   const axiosPublic = useAxiosPublic();
 
-   const onSubmit = (data) => {
-      console.log(data);
-      createUser(data.email, data.password)
+   const onSubmit = async (data) => {
+      // console.log(data);
 
-         .then(result => {
-            updateProfile(result.user, {
-               displayName: data.name,
-               photoURL: data.photo,
-            })
-               .then(() => { })
-               .catch(error => {
-                  toast.error(error.message.split(': ')[1]);
+      // image upload to imgbb and then get an url
+      const imageFile = data.image[0];
+      const formData = new FormData();
+      formData.append('image', imageFile);
+
+      const res = await axios.post(image_hosting_api, formData, {
+         headers: {
+            'content-type': 'multipart/form-data'
+         }
+      });
+
+      if (res.data.success) {
+         const image = res.data.data.display_url;
+
+         createUser(data.email, data.password)
+            .then(result => {
+               updateProfile(result.user, {
+                  displayName: data.name,
+                  photoURL: image,
                })
-            const signedUser = result.user;
-            console.log(signedUser);
-            reset();
-            navigate('/');
-         })
-
-      const registeredInfo = { ...data, joined_on: moment().format("YYYY-MM-DD HH:mm:ss") }
-
-      axiosSecure.post(`/users`, registeredInfo)
-         .then(res => {
-            if (res.data.insertedId) {
-               Swal.fire({
-                  title: 'Congratulations!',
-                  text: `User Added Successfully!`,
-                  icon: 'success',
-                  confirmButtonText: 'Okay!'
-               })
+                  .then(() => { })
+                  .catch(error => {
+                     toast.error(error.message.split(': ')[1]);
+                  })
+               const signedUser = result.user;
+               console.log(signedUser);
                reset();
-            }
-         })
-         .catch(error => {
-            console.error(error);
-            if (error) {
-               Swal.fire({
-                  title: 'Error!!',
-                  text: error,
-                  icon: 'error',
-                  confirmButtonText: 'Close'
-               })
-            }
-         })
+               setUser(prevUser => ({
+                  ...prevUser,
+                  displayName: data.name,
+                  photoURL: image || prevUser.photoURL,
+               }));
+               navigate('/');
 
+            })
+
+         let registeredInfo = { ...data, joined_on: moment().format("YYYY-MM-DD HH:mm:ss") };
+         delete registeredInfo.image;
+         registeredInfo.photo = image;
+         axiosPublic.post(`/users`, registeredInfo)
+            .then(res => {
+               if (res.data.insertedId) {
+                  Swal.fire({
+                     title: 'Congratulations!',
+                     text: `User Added Successfully!`,
+                     icon: 'success',
+                     confirmButtonText: 'Okay!'
+                  })
+                  reset();
+               }
+            })
+            .catch(error => {
+               console.error(error);
+               if (error) {
+                  Swal.fire({
+                     title: 'Error!!',
+                     text: error,
+                     icon: 'error',
+                     confirmButtonText: 'Close'
+                  })
+               }
+            })
+      }
    }
 
    const [showPassword, setShowPassword] = useState(false);
 
-   // const handleRegister = e => {
-   //    e.preventDefault();
-   //    // console.log(e.currentTarget);
-   //    // const form = new FormData(e.currentTarget);
-   //    // const name = form.get('name');
-   //    // const photo = form.get('photo');
-   //    // const email = form.get('email');
-   //    // const password = form.get('password');
-   //    const form = e.target;
-   //    const name = form.name.value;
-   //    const email = form.email.value;
-   //    const password = form.password.value;
-   //    const photo = form.photo.value;
-   //    console.log(name, photo, email, password);
-
-
-   //    if (password.length < 6) {
-   //       setRegisterError('Password must be at least 6 characters or longer');
-   //       toast.error(registerError)
-   //       return;
-   //    } else if (!/[A-Z]/.test(password)) {
-   //       setRegisterError('Password must contain a upper case letter!');
-   //       toast.error(registerError)
-   //       return;
-   //    } else if (!/[a-z]/.test(password)) {
-   //       setRegisterError('Password must contain a lower case letter!');
-   //       toast.error(registerError)
-   //       return;
-   //    }
-
-   //    console.log("btn clicked");
-
-   //    // create user
-   //    createUser(email, password)
-   //       .then(result => {
-   //          console.log(result.user);
-   //          updateProfile(result.user, {
-   //             displayName: name,
-   //             photoURL: photo,
-   //          });
-   //          const createdAt = result.user?.metadata?.creationTime;
-   //          const user = { email, createdAt };
-   //          fetch('', {
-   //             method: 'POST',
-   //             headers: {
-   //                'content-type': 'application/json'
-   //             },
-   //             body: JSON.stringify(user)
-   //          })
-   //             .then(res => res.json())
-   //             .then(data => {
-   //                console.log(data);
-   //             })
-
-   //          setRegisterSuccess(toast.success('User created successfully!'));
-   //       })
-   //       .catch(error => {
-   //          console.error(error);
-   //          setRegisterError(error.message);
-   //       })
-   // }
    return (
       <div>
          <div className="hero min-h-[90vh] bg-base-100">
@@ -253,8 +216,8 @@ const Register = () => {
                         <label className="label">
                            <span className="label-text">Photo URL</span>
                         </label>
-                        <input type="text" {...register("photo", { required: true })} placeholder="photo" name='photo' className="input input-bordered" />
-                        {errors.photo && <span className="text-red-400">PhotoURL is required</span>}
+                        <input type="file" {...register("image", { required: true })} placeholder="photo" name='image' className="input input-bordered" />
+                        {errors.image && <span className="text-red-400">PhotoURL is required</span>}
                      </div>
                      <div className="form-control mt-4">
                         <button type="submit" className="btn btn-outline">Register</button>
