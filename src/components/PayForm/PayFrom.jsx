@@ -21,13 +21,13 @@ const PayFrom = ({ employee, onSubmit, setMonths }) => {
          <form onSubmit={handleSubmit(onSubmit)}>
             <div className="relative flex flex-row">
                <div>
-                  <h1 className='text-center clear-start text-3xl pb-12'>You want to pay '{employee.name}'?</h1>
+                  <h1 className='text-center clear-start text-3xl pb-12'>You want to pay {employee?.name}?</h1>
                   <div {...register("name", { required: false })}>
-                     <h1 className='text-2xl font-semibold pb-2'>Employee name: {employee.name}</h1>
+                     <h1 className='text-2xl font-semibold pb-2'>Employee name: {employee?.name}</h1>
                   </div>
                   {errors.name && <span className="text-red-400">Please choose date</span>}
                   <div {...register("salary", { required: false })}>
-                     <h1 className='text-2xl font-semibold pb-2'>Salary: {employee.salary}</h1>
+                     <h1 className='text-2xl font-semibold pb-2'>Salary: {employee?.salary}</h1>
                   </div>
                   {errors.salary && <span className="text-red-400">Please choose date</span>}
                   <div className='text-sm'>

@@ -6,7 +6,6 @@ import useAdmin from "../../components/Hooks/useAdmin";
 const Dashboard = () => {
 
    const [isAdmin] = useAdmin();
-   console.log(isAdmin);
    return (
       <div className="max-w-7xl mx-auto">
          <Navbar></Navbar>

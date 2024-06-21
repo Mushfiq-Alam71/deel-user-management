@@ -4,14 +4,17 @@ import PayFrom from "../../../components/PayForm/PayFrom";
 import Swal from "sweetalert2";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosPublic from "../../../components/Hooks/useAxiosPublic";
+import { toast } from "react-toastify";
 
 
 
 const EmployeeList = () => {
    const [months, setMonths] = useState({});
+   const axiosPublic = useAxiosPublic();
+   const [payableEmployee, setPayableEmployee] = useState(null);
    const axiosSecure = useAxiosPublic();
-   const { data: employees = [] } = useQuery({
-      queryKey: ['employee'],
+   const { data: employees = [], refetch } = useQuery({
+      queryKey: ['employees'],
       queryFn: async () => {
          const res = await axiosSecure.get('/users')
          return res.data;
@@ -49,22 +52,27 @@ const EmployeeList = () => {
          })
    }
 
-   const axiosPublic = useAxiosPublic();
 
-   const [payableEmployee, setPayableEmployee] = useState(null);
 
-   const toggleVerified = async (id) => {
-      const res = await axiosPublic.patch(`users/${id}`);
-      employees((prevEmployees) =>
-         prevEmployees.map((employee) =>
-            employee._id === id ? { ...employee, verified: res.data.verified } : employee
-         )
-      );
+   const toggleVerified = async (vEmployee) => {
+      let verifiedState = {};
+      if (vEmployee.verified && vEmployee.verified === true) {
+         verifiedState = { verified: false }
+      } else {
+         verifiedState = { verified: true }
+      }
+
+      const res = await axiosPublic.patch(`users/${vEmployee._id}`, verifiedState);
+      if (res.data.modifiedCount > 0) {
+         toast.success('Status Changed');
+         refetch();
+      }
    };
+
 
    return (
       <div>
-         EmployeeList: {employees.length}
+         EmployeeList: {employees?.length}
          <div>
             <div className="overflow-x-auto">
                <table className="table">
@@ -85,19 +93,19 @@ const EmployeeList = () => {
                   <tbody>
                      {/* row 1 */}
                      {
-                        employees.filter(emp => emp.role !== 'HR' && emp.role !== 'admin').map((employee, index) => (
+                        employees?.filter(emp => emp.role !== 'HR' && emp.role !== 'admin').map((employee, index) => (
                            // && emp.role !== 'admin'
                            <tr key={employee._id}>
                               <th>{index + 1}</th>
                               <td>{employee.name}</td>
                               <td>{employee.email}</td>
                               <td>{employee.role}</td>
-                              <td onClick={() => toggleVerified(employee._id)}>
+                              <td className="cursor-pointer text-xl" onClick={() => toggleVerified(employee)}>
                                  {employee.verified ? '✅' : '❌'}
                               </td>
                               <td>{employee.bank}</td>
                               <td>{employee.salary}</td>
-                              <td onClick={() => { document.getElementById('my_modal').showModal(); setPayableEmployee(employee) }} className="btn btn-outline btn-sm mt-1">Pay</td>
+                              <td ><button disabled={!employee.verified} className="btn btn-outline btn-sm mt-1" onClick={() => { document.getElementById('my_modal').showModal(); setPayableEmployee(employee) }}>Pay</button></td>
                               <td><Link className="hover:underline hover:text-blue-500" to={`/dashboard/single-employee/${employee._id}`}>View Details</Link></td>
                               {/* modal */}
                            </tr>
