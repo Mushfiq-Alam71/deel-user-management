@@ -1,4 +1,5 @@
 import BannerSlider from "../../components/BannerSlider/BannerSlider";
+import WorkManagement from "../../components/WorkManagement/WorkManagement";
 
 
 const Home = () => {
@@ -21,6 +22,9 @@ const Home = () => {
             </div>
             <div className="mt-24">
                 <BannerSlider></BannerSlider>
+            </div>
+            <div>
+                <WorkManagement></WorkManagement>
             </div>
         </section>
 

@@ -1,16 +1,15 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import PayFrom from "../../../components/PayForm/PayFrom";
-import useAxiosSecure from "../../../components/Hooks/useAxiosSecure";
 import Swal from "sweetalert2";
 import { useQuery } from "@tanstack/react-query";
+import useAxiosPublic from "../../../components/Hooks/useAxiosPublic";
 
 
 
 const EmployeeList = () => {
-   const [payableEmployee, setPayableEmployee] = useState({});
    const [months, setMonths] = useState({});
-   const axiosSecure = useAxiosSecure();
+   const axiosSecure = useAxiosPublic();
    const { data: employees = [] } = useQuery({
       queryKey: ['employee'],
       queryFn: async () => {
@@ -18,6 +17,7 @@ const EmployeeList = () => {
          return res.data;
       }
    })
+   console.log(employees);
 
    // const form = useForm();
    const onSubmit = () => {
@@ -49,6 +49,19 @@ const EmployeeList = () => {
          })
    }
 
+   const axiosPublic = useAxiosPublic();
+
+   const [payableEmployee, setPayableEmployee] = useState(null);
+
+   const toggleVerified = async (id) => {
+      const res = await axiosPublic.patch(`users/${id}`);
+      employees((prevEmployees) =>
+         prevEmployees.map((employee) =>
+            employee._id === id ? { ...employee, verified: res.data.verified } : employee
+         )
+      );
+   };
+
    return (
       <div>
          EmployeeList: {employees.length}
@@ -72,14 +85,16 @@ const EmployeeList = () => {
                   <tbody>
                      {/* row 1 */}
                      {
-                        employees.filter(emp => emp.role !== 'HR').map((employee, index) => (
+                        employees.filter(emp => emp.role !== 'HR' && emp.role !== 'admin').map((employee, index) => (
                            // && emp.role !== 'admin'
                            <tr key={employee._id}>
                               <th>{index + 1}</th>
                               <td>{employee.name}</td>
                               <td>{employee.email}</td>
                               <td>{employee.role}</td>
-                              <td>❌</td>
+                              <td onClick={() => toggleVerified(employee._id)}>
+                                 {employee.verified ? '✅' : '❌'}
+                              </td>
                               <td>{employee.bank}</td>
                               <td>{employee.salary}</td>
                               <td onClick={() => { document.getElementById('my_modal').showModal(); setPayableEmployee(employee) }} className="btn btn-outline btn-sm mt-1">Pay</td>
