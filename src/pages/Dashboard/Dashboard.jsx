@@ -1,11 +1,13 @@
 import { NavLink, Outlet } from "react-router-dom";
 import Navbar from "../../components/Navbar/Navbar";
 import useAdmin from "../../components/Hooks/useAdmin";
+import useHR from "../../components/Hooks/useHR";
 
 
 const Dashboard = () => {
 
    const [isAdmin] = useAdmin();
+   const [isHR] = useHR();
    return (
       <div className="max-w-7xl mx-auto">
          <Navbar></Navbar>
@@ -16,8 +18,8 @@ const Dashboard = () => {
 
                   {isAdmin ? <><li><NavLink to="/dashboard/all-employee-list" className="text-lg font-semibold">All Employee List</NavLink></li></> : <><li><NavLink to="/dashboard/work-sheet" className="text-lg font-semibold">Work Sheet</NavLink></li>
                      <li><NavLink to="/dashboard/payment-history" className="text-lg font-semibold">Payment History</NavLink></li>
-                     <div className="divider"></div>
-                     <li><NavLink to="/dashboard/employee-list" className="text-lg font-semibold">Employee List</NavLink></li>
+
+                     {isHR && <><div className="divider"></div> <li><NavLink to="/dashboard/employee-list" className="text-lg font-semibold">Employee List</NavLink></li></>}
                      <div className="divider"></div></>}
                </ul>
             </div>

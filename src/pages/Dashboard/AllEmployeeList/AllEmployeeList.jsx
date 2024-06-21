@@ -3,8 +3,14 @@ import { FaUser } from "react-icons/fa";
 import useAxiosSecure from "../../../components/Hooks/useAxiosSecure";
 import Swal from "sweetalert2";
 import { useQuery } from "@tanstack/react-query";
+import useHR from "../../../components/Hooks/useHR";
+import RoleSelection from "../../../components/RoleSelection/RoleSelection";
+import useAdmin from "../../../components/Hooks/useAdmin";
 
 const AllEmployeeList = () => {
+
+   const [isAdmin] = useAdmin();
+
 
    const axiosSecure = useAxiosSecure();
    const { data: employee = [], refetch } = useQuery({
@@ -16,22 +22,24 @@ const AllEmployeeList = () => {
    })
 
 
-   const handleMakeAdmin = employee => (
-      axiosSecure.patch(`/users/admin/${employee._id}`)
-         .then(res => {
-            console.log(res.data);
-            if (res.data.modification > 0) {
-               refetch();
-               Swal.fire({
-                  position: "top-end",
-                  icon: "success",
-                  title: `${employee.name} is an Admin now!`,
-                  showConfirmButton: false,
-                  timer: 1500
-               });
-            }
-         })
-   )
+   // const handleMakeAdmin = employee => (
+   //    axiosSecure.patch(`/users/admin/${employee._id}`)
+   //       .then(res => {
+   //          console.log(res.data);
+   //          if (res.data.modification > 0) {
+   //             refetch();
+   //             Swal.fire({
+   //                position: "top-end",
+   //                icon: "success",
+   //                title: `${employee.name} is an Admin now!`,
+   //                showConfirmButton: false,
+   //                timer: 1500
+   //             });
+   //          }
+   //       })
+   // )
+
+
    return (
       <div>
          EmployeeList: {employee.length}
@@ -59,7 +67,8 @@ const AllEmployeeList = () => {
                            <th>{index + 1}</th>
                            <td>{employee.name}</td>
                            <td>{employee.email}</td>
-                           <td> {employee.role === 'admin' ? 'Admin' : <button onClick={() => handleMakeAdmin(employee)} className="btn btn-sm bg-blue-500"><FaUser className="text-white text-sm"></FaUser></button>}</td>
+                           {/* <td> {employee.role === 'admin' ? 'Admin' : <button onClick={() => handleMakeAdmin(employee)} className="btn btn-sm bg-blue-500"><FaUser className="text-white text-sm"></FaUser></button>}</td> */}
+                           <td><RoleSelection refetch={refetch} employeeID={employee._id} role={employee.role} enabled={isAdmin} /></td>
                            <td>❌</td>
                            <td>{employee.bank}</td>
                            <td>{employee.salary}</td>
