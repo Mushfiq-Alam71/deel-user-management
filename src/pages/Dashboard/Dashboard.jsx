@@ -15,12 +15,14 @@ const Dashboard = () => {
             {/* dashboard nav */}
             <div className="w-64 min-h-screen bg-base-200 my-8">
                <ul className="menu my-4">
-
-                  {isAdmin ? <><li><NavLink to="/dashboard/all-employee-list" className="text-lg font-semibold">All Employee List</NavLink></li></> : <><li><NavLink to="/dashboard/work-sheet" className="text-lg font-semibold">Work Sheet</NavLink></li>
-                     <li><NavLink to="/dashboard/payment-history" className="text-lg font-semibold">Payment History</NavLink></li>
-
-                     {isHR && <><div className="divider"></div> <li><NavLink to="/dashboard/employee-list" className="text-lg font-semibold">Employee List</NavLink></li></>}
-                     <div className="divider"></div></>}
+                  {isAdmin
+                     ? <li><NavLink to="/dashboard/all-employee-list" className="text-lg font-semibold">All Employee List</NavLink></li>
+                     : isHR ? <li><NavLink to="/dashboard/employee-list" className="text-lg font-semibold">Employee List</NavLink></li>
+                        : <>
+                           <li><NavLink to="/dashboard/work-sheet" className="text-lg font-semibold">Work Sheet</NavLink></li>
+                           <li><NavLink to="/dashboard/payment-history" className="text-lg font-semibold">Payment History</NavLink></li>
+                        </>
+                  }
                </ul>
             </div>
 

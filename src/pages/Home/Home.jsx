@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import BannerSlider from "../../components/BannerSlider/BannerSlider";
 import Projects from "../../components/Projects/Projects";
 import Services from "../../components/Services/Services";
@@ -20,8 +21,8 @@ const Home = () => {
                 <h1 className="text-5xl lg:text-7xl font-semibold text-center">Manage your entire team in one app</h1>
                 <p className="text-2xl lg:text-3xl font-normal text-center">Connecteam simplifies everyday work with deskless teams and keeps them connected, so you can focus on growing the business</p>
                 <div className="flex flex-row justify-center gap-4">
-                    <button className="btn btn-outline rounded-full text-xl font-medium">Dashboard</button>
-                    <button className="btn btn-outline rounded-full text-xl font-medium">Contact us</button>
+                    <Link to='/dashboard' className="btn btn-outline rounded-full text-xl font-medium">Dashboard</Link>
+                    <Link to='/contactus' className="btn btn-outline rounded-full text-xl font-medium">Contact us</Link>
                 </div>
             </div>
             <div className="mt-24">
