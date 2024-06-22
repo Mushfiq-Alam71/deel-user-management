@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 const WorkManagement = () => {
    return (
-      <div className="flex lg:flex-row gap-12 pt-28">
+      <div className="flex flex-col mx-4 lg:flex-row gap-12 pt-28">
          <div>
             <img className="rounded-xl" src="../../../public/images/worksheet.jpg" alt="" />
          </div>

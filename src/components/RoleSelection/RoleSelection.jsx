@@ -33,7 +33,7 @@ const RoleSelection = ({ enabled, role, employeeID, refetch }) => {
       <select onChange={(e) => handleMakeAdmin(employeeID, e.target.value,)} disabled={!enabled} name="roleSelection" id="roleSelection">
          <option selected={isEmployee} value="Employee">Employee</option>
          <option selected={isHR} value="hr">HR</option>
-         <option selected={isAdmin} value="Admin">Admin</option>
+         <option selected={isAdmin} value="admin">Admin</option>
       </select>
 
    );

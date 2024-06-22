@@ -68,7 +68,6 @@ const AllEmployeeList = () => {
 
    return (
       <div>
-         EmployeeList: {employee.length}
          <div>
             <div className="overflow-x-auto">
                <table className="table">
