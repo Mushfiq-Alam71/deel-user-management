@@ -65,7 +65,7 @@ export const router = createBrowserRouter([
             {
                 path: "single-employee/:id",
                 element: <PrivateRoute><EmployeeDetails /></PrivateRoute>,
-                loader: ({ params }) => fetch(`http://localhost:5000/users/${params.id}`)
+                loader: ({ params }) => fetch(`https://b9-a12-server-puce.vercel.app/users/${params.id}`)
             }
         ]
     }
