@@ -79,7 +79,7 @@ const Navbar = () => {
             {/* logo / title */}
             <div className="flex flex-row">
                 <img src="/images/icon.png" alt="" />
-                <a className="flex items-center text-4xl bg-gradient-to-r from-[#343ccf] to-[#0b289a] bg-clip-text text-transparent">WorkWise</a>
+                <a className="flex items-center text-4xl bg-gradient-to-r from-[#343ccf] to-[#0b289a] bg-clip-text text-transparent">deel.</a>
             </div>
             <div className="hidden lg:flex">{navLink}</div>
             <div>
