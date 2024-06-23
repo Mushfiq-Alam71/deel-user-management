@@ -19,8 +19,8 @@ const SocialLogin = () => {
    return (
       <div className="flex flex-row justify-center gap-4">
          <button onClick={() => handleSocialLogin(googleLogin)} className="btn btn-outline rounded-2xl"><FaGoogle />Google</button>
-         <button onClick={() => handleSocialLogin(githubLogin)} className="btn btn-outline rounded-2xl"><FaGithub />Github</button>
-         <button onClick={() => handleSocialLogin(facebookLogin)} className="btn btn-outline rounded-2xl"><FaFacebook />FaceBook</button>
+         {/* <button onClick={() => handleSocialLogin(githubLogin)} className="btn btn-outline rounded-2xl"><FaGithub />Github</button>
+         <button onClick={() => handleSocialLogin(facebookLogin)} className="btn btn-outline rounded-2xl"><FaFacebook />FaceBook</button> */}
       </div>
    );
 };

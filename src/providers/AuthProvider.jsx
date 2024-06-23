@@ -1,12 +1,15 @@
 import PropTypes from 'prop-types';
 import { useState, createContext, useEffect } from "react";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, signInWithPopup } from "firebase/auth";
 import { auth } from "../firebase/firebase.config";
 import useAxiosSecure from '../components/Hooks/useAxiosSecure';
+import { GoogleAuthProvider } from 'firebase/auth/web-extension';
 
 
 // export const AuthContext = createContext({ user: '', loading: false, createUser: (email, password) => { }, signIn: (email, password) => { }, logOut: () => { } });
 export const AuthContext = createContext({ user: '', loading: false, createUser: (email, password) => { }, signIn: (email, password) => { }, logOut: () => { } });
+
+const googleProvider = new GoogleAuthProvider();
 
 const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
@@ -29,6 +32,12 @@ const AuthProvider = ({ children }) => {
     const logOut = () => {
         setLoading(true);
         return signOut(auth)
+    }
+
+    // google login
+    const googleLogin = () => {
+        setLoading(true);
+        return signInWithPopup(auth, googleProvider)
     }
 
     // Observer Function
@@ -56,7 +65,7 @@ const AuthProvider = ({ children }) => {
         }
     }, [axiosSecure])
 
-    const authInfo = { user, loading, createUser, signIn, logOut, setUser };
+    const authInfo = { user, loading, googleLogin, createUser, signIn, logOut, setUser };
 
     return (
         <AuthContext.Provider value={authInfo}>
