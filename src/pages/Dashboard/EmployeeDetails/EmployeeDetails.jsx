@@ -26,7 +26,7 @@ const EmployeeDetails = () => {
 
    return (
       <div>
-         <div className="text-center">
+         <div className="text-center pb-20">
             <h1 className="text-3xl font-medium pb-8">
                <span className="text-3xl font-bold">Employee Name:</span> {loadedEmployee.name}
             </h1>
@@ -50,6 +50,7 @@ const EmployeeDetails = () => {
             </div>
          </div>
          <div style={{ width: '100%', height: 400 }}>
+            <h1 className="text-3xl font-bold pb-8">Chart:</h1>
             <ResponsiveContainer>
                <BarChart
                   data={chartData}
